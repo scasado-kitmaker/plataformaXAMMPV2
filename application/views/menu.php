@@ -24,14 +24,9 @@
 	<div class="show_entries">
 		<div class="menuBotones"> 
 
-			<?php if (!empty($saldo)) : ?>
-				<?php foreach($saldo as $saldof) : ?>
-					<?php $saldoz = $saldof->saldo ?>
-					
-				<?php endforeach; ?>
+			
 				<!-- If there is no info -->
 
-			<?php endif; ?>
 
 			<?php if (!empty($estado)) : ?>
 				<?php foreach($saldo as $estadof) : ?>
@@ -116,31 +111,7 @@
 				</li>
 
 				<!--Si se esta dado de alta en el servicio-->
-				<?php if ($var1 ==0) : ?>
-					<?php if ($estadoz ==0) : ?>
-
-						<li>				
-
-							<!--Si tiene saldo-->
-
-							<?php if ($saldoz >0) : ?>
-
-								<?php echo anchor(base_url().'index.php/plataforma/alta/',' Alta ','class="'.$varVerde2.'"');?>
-								<!--Si NO tiene saldo-->
-							<?php else : ?>
-								<?php echo anchor(base_url().'index.php/plataforma/aviso_saldo/',' Alta ','class="'.$varVerde2.'"');?>
-							<?php endif; ?>		
-
-						</li>
-						<!--Si NO se esta dado de alta en el servicio-->
-					<?php else : ?>
-						<li>
-							<?php
-							echo anchor(base_url().'index.php/plataforma/baja/',' Baja ','class="'.$varVerde3.'"');
-							?>
-						</li>
-					<?php endif; ?>	
-				<?php endif; ?>	
+				
 				<li>
 					<?php
 					echo anchor(base_url().'index.php/plataforma/about/',' About ','class="'.$varVerde4.'"');
