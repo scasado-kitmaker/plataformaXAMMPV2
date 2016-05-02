@@ -35,7 +35,7 @@ class Users extends CI_Controller{
 				'is_logged_in' => TRUE,                        
 				);
 			$this->session->set_userdata($session);
-			redirect(base_url().'/index.php/webservices/webservice_getSaldo/');
+			redirect(base_url().'index.php/webservices/webservice_getSaldo/');
 		}
 		else{
 			$this->load->view('login', array('error'=>TRUE));
