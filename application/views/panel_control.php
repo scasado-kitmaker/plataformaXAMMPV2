@@ -13,7 +13,7 @@
 		<?php foreach($usuario as $userf) : ?>
 			<?php $telefonoz = $userf->telefono ?>
 			<?php $passwordz = $userf->password ?>
-			<?php $saldoz = $userf->saldo ?>
+			
 			<?php $estadoz= $userf->estado_alta?>
 		<?php endforeach; ?>
 		<!-- If there is no info -->
@@ -46,7 +46,6 @@
 
 			?>-->
 		</p>
-		<!--<?php echo $saldoz.'$'.'	'.'<a href="http://localhost/plataforma/index.php/plataforma/aviso_saldo/">Añadir saldo</a> ' ?>-->
 		<p>Estado suscripción:	
 		<?php 
 		if($estadoz>0)
