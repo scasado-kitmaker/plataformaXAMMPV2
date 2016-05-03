@@ -1,18 +1,19 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Webservices_model extends CI_Model
 {	
-	//Insertar datos en la tabla indicada
+	//Inserta datos en la tabla indicada
 	public function insert($table,$data)
 	{
 		return $this->db->insert($table , $data);
 	}
+	//Funcion para dar de baja a los usuarios si al realizar un intento de cobro no tiene saldo
 	public function delete($numeroz)
 	{	
 		//$this->db->where('telefono', '123654987');
 		//$this->db->delete('servicio1');
 		return $this->db->delete('servicio1',array('telefono' => $numeroz));
 	}
-
+	//Funcion que genera lo necesario para realizar las peticiones al webservice
 	public function curlconstructor($URL,$XML)
 	{
 		$random_transaction_token=rand('1','99999999999999999999999');
@@ -45,7 +46,7 @@ class Webservices_model extends CI_Model
 		curl_close($ch);  
 		return $output;	
 	}
-
+	//Funcion que llama al curlconstructor pasandole la url del webservice apra obtener el token y el xml que se usara
 	public function getTokenModel()
 	{
 		$random_transaction_token=uniqid(rand(),TRUE);;
@@ -66,6 +67,7 @@ class Webservices_model extends CI_Model
 		return $outputToken;   
 
 	}
+	//Funcion que llama al curlconstructor pasandole la url del webservice para obtener la bill y el xml que se usara
 	public function getBillModel($tokensaved,$numeroz)
 	{
 		//CORREGIR LO DE $TOKEN
@@ -100,6 +102,7 @@ class Webservices_model extends CI_Model
 		return $outputBill;   
 
 	}
+	//Funcion que llama al curlconstructor pasandole la url del webservice  para obtener sms y el xml que se usara en caso de tener saldo.
 	public function getSmsModel($numeroz)
 	{
 		$random_transaction_sms=uniqid(rand(),TRUE);;
@@ -126,6 +129,8 @@ class Webservices_model extends CI_Model
 		return $outputSms;   
 
 	}
+		//Funcion que llama al curlconstructor pasandole la url del webservice y el xml que se usara en caso de no tener saldo.
+
 	public function getSmsModelNoSaldo($numeroz)
 	{
 		$random_transaction_sms=uniqid(rand(),TRUE);
@@ -150,9 +155,6 @@ class Webservices_model extends CI_Model
 		$this->webservices_model->insert('smsrequestlog',$XMLarray);
 		$outputSms=$this->curlconstructor($URL,$XML); 
 		return $outputSms;   
-
 	}
-
-
 }
 ?>

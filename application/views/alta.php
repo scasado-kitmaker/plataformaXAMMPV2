@@ -15,7 +15,6 @@
 <body>
 	<!--vista de menu-->
 	<?php include('menu.php');?>
-
 	<!--Formulario para aceptar el alta en el servicio-->
 	<div class="show_entries" >
 		<?=form_open(base_url().'index.php/plataforma/insert_servicio/')?>
@@ -35,7 +34,6 @@
 		<div style="display: none;">
 			<?=form_input('telefono',$this->session->userdata('username'))?>
 		</div>
-		<!-- if que compruebe el saldo de la bbdd del usuario, si es mayor a 0 boton desactivado y aviso de saldo insuficiente, boton de añadir saldo activado-->
 		<?=form_submit('submit', 'Darse de alta')?>
 	</div>
 </body>
