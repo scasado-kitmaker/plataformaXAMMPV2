@@ -21,6 +21,9 @@ class Webservices extends CI_Controller {
 		foreach ($numeros as $numerof) {
 			$numeroz = $numerof->telefono;
 			$tokensaved=$this->getToken();
+			if ( $tokensaved['statusCode']!='TOKEN_SUCCESS'){
+				$tokensaved=$this->getToken();
+			}				
 			$billsaved=$this->getBill($tokensaved,$numeroz);
 			//$billsaved=$this->getBill($tokensaved,$numeroz);
 			$wololo=$billsaved['statusCode'];
