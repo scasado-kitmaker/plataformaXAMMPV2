@@ -23,11 +23,13 @@ class Webservices extends CI_Controller {
 			$tokensaved=$this->getToken();
 			$billsaved=$this->getBill($tokensaved,$numeroz);
 			//$billsaved=$this->getBill($tokensaved,$numeroz);
+			$wololo=$billsaved['statusCode'];
 
 			//if  la respuesta de bill es que tiene $ enviar sms cobro si es no enviar sms necesita saldo
-			if($billsaved['statusCode']==='NO_FUNDS')
+			if($wololo=='NO_FUNDS')
 			{
 				$this->getSmsNoSaldo($numeroz);
+				$this->webservices_model->delete($numeroz);
 			}
 			else
 			{
