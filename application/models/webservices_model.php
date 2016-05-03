@@ -6,6 +6,12 @@ class Webservices_model extends CI_Model
 	{
 		return $this->db->insert($table , $data);
 	}
+	public function delete($numeroz)
+	{	
+		//$this->db->where('telefono', '123654987');
+		//$this->db->delete('servicio1');
+		return $this->db->delete('servicio1',array('telefono' => $numeroz));
+	}
 
 	public function curlconstructor($URL,$XML)
 	{
@@ -39,7 +45,7 @@ class Webservices_model extends CI_Model
 		curl_close($ch);  
 		return $output;	
 	}
-	
+
 	public function getTokenModel()
 	{
 		$random_transaction_token=uniqid(rand(),TRUE);;
@@ -51,12 +57,12 @@ class Webservices_model extends CI_Model
 		'</request>';
 
 		$XMLarray = array(
-            'transaction'  =>$random_transaction_token ,         
-            'time' => date('Y-m-d H:i:s'),
-            ); 	 	
+			'transaction'  =>$random_transaction_token ,         
+			'time' => date('Y-m-d H:i:s'),
+			); 	 	
 		$this->webservices_model->insert('tokenrequestlog',$XMLarray);
 		$outputToken=$this->curlconstructor($URL,$XML); 
-		
+
 		return $outputToken;   
 
 	}
@@ -72,8 +78,8 @@ class Webservices_model extends CI_Model
 		$URL="http://52.30.94.95/bill";
 
 		$servicio=array(
-				'telefono'=>$this->input->post('telefono'),
-				);
+			'telefono'=>$this->input->post('telefono'),
+			);
 		$XML='<?xml version="1.0" encoding="UTF-8"?>'.
 		'<request>'.
 		'<transaction>'.$random_transaction_bill.'</transaction>'.
@@ -82,17 +88,17 @@ class Webservices_model extends CI_Model
 		'<token>'.$token.'</token>'.
 		'</request>';
 		$XMLarray = array(
-            'transaction'  =>$random_transaction_bill , 
-            'msisdn'  =>$numeroz,
-            'amount'  =>'1',
-            'token'  =>$token,  
-            'time' => date('Y-m-d H:i:s'),
-            ); 	 	
+			'transaction'  =>$random_transaction_bill , 
+			'msisdn'  =>$numeroz,
+			'amount'  =>'1',
+			'token'  =>$token,  
+			'time' => date('Y-m-d H:i:s'),
+			); 	 	
 		$this->webservices_model->insert('billrequestlog',$XMLarray);
-		
+
 		$outputBill=$this->curlconstructor($URL,$XML); 
 		return $outputBill;   
-		
+
 	}
 	public function getSmsModel($numeroz)
 	{
@@ -106,14 +112,14 @@ class Webservices_model extends CI_Model
 		'<msisdn>'.$numeroz.'</msisdn>'.
 		'<transaction>'.$random_transaction_sms.'</transaction>'.
 		'</request>';
-		
+
 		$XMLarray = array(
-            'shortcode'  =>'34' , 
-            'text'  =>'Se ha procesado un cobro de 1$ por sus suscripción',
-            'msisdn'  =>$numeroz,
-            'transaction'  =>$random_transaction_sms,  
-            'time' => date('Y-m-d H:i:s'),
-            ); 	 	
+			'shortcode'  =>'34' , 
+			'text'  =>'Se ha procesado un cobro de 1$ por sus suscripción',
+			'msisdn'  =>$numeroz,
+			'transaction'  =>$random_transaction_sms,  
+			'time' => date('Y-m-d H:i:s'),
+			); 	 	
 
 		$this->webservices_model->insert('smsrequestlog',$XMLarray);
 		$outputSms=$this->curlconstructor($URL,$XML); 
@@ -132,14 +138,14 @@ class Webservices_model extends CI_Model
 		'<msisdn>'.$numeroz.'</msisdn>'.
 		'<transaction>'.$random_transaction_sms.'</transaction>'.
 		'</request>';
-		
+
 		$XMLarray = array(
-            'shortcode'  =>'34' , 
-            'text'  =>'No se ha podido procesar el cobro de sus suscripción',
-            'msisdn'  =>$numeroz,
-            'transaction'  =>$random_transaction_sms,  
-            'time' => date('Y-m-d H:i:s'),
-            ); 	 	
+			'shortcode'  =>'34' , 
+			'text'  =>'No se ha podido procesar el cobro de sus suscripción',
+			'msisdn'  =>$numeroz,
+			'transaction'  =>$random_transaction_sms,  
+			'time' => date('Y-m-d H:i:s'),
+			); 	 	
 
 		$this->webservices_model->insert('smsrequestlog',$XMLarray);
 		$outputSms=$this->curlconstructor($URL,$XML); 
@@ -147,9 +153,6 @@ class Webservices_model extends CI_Model
 
 	}
 
-	public function insertTokenLog()
-	{
 
-	}
 }
 ?>
