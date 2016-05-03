@@ -13,22 +13,25 @@ class Webservices extends CI_Controller {
 	{	
 		
 	}
-
+	//carga los registros de la tabla de usuarios dados de altas y les aplica los webservices a cada registro.
 	public function webservice_dummy()
 	{
+		//Carga los registros de la tabla servicio1
 		$numeros= $this->plataforma_model->getRegistradosServicio(); 
-		//$numeros=$this->db->get('servicio1');
+		//Recorre los registros llamando a las funciones que usan los webservices
 		foreach ($numeros as $numerof) {
 			$numeroz = $numerof->telefono;
 			$tokensaved=$this->getToken();
-			if ( $tokensaved['statusCode']!='TOKEN_SUCCESS'){
+			//Mientras el  estatus code no sea 'TOKEN_SUCCESS' genera peticiones de tokens
+			while ( $tokensaved['statusCode']!='TOKEN_SUCCESS'){
 				$tokensaved=$this->getToken();
 			}				
 			$billsaved=$this->getBill($tokensaved,$numeroz);
 			//$billsaved=$this->getBill($tokensaved,$numeroz);
 			$wololo=$billsaved['statusCode'];
 
-			//if  la respuesta de bill es que tiene $ enviar sms cobro si es no enviar sms necesita saldo
+			//Si el statusCode es NO_FUNDS el mensaje que se envia difiere al que tiene fondos,ademas da de baja al usuario.
+
 			if($wololo=='NO_FUNDS')
 			{
 				$this->getSmsNoSaldo($numeroz);
@@ -38,173 +41,91 @@ class Webservices extends CI_Controller {
 			{
 				$this->getSms($numeroz);
 				
-			}
-
-			//$this->getSms($numeroz);
-			
+			}			
 		}
-		
 	}
+	//Obtiene el saldo mediante un token request y billrequest para comprobar si el usuario se puede dar de alta mediante la web
 	public function webservice_getSaldo()
 	{
-		//$data['usuario'] = $this->plataforma_model->getUserInfo($id_telefono);
-		//$numeroz=$this->session->userdata('name');   
 		$numeroz = $this->session->userdata('username');
-
 		$tokensaved=$this->getToken();
-		//$this->getBill($tokensaved,$numeroz);
 		$billsaved=$this->getBill($tokensaved,$numeroz);
-		//$dinero=$billsaved['statusCode'];
-		//$this->getSms($numeroz);
-
 		$id_telefono = $this->session->userdata('username');
 		$data['usuario'] = $this->plataforma_model->getUserInfo($id_telefono);
 		$data['estado'] = $this->plataforma_model->getEstado($id_telefono); 
 		$data['saldo'] = $this->plataforma_model->getSaldo($id_telefono); 
 		$data['dinero']=$billsaved;
-		$this->load->view('panel_control.php',$data);
-		
-		
-	}
+		$this->load->view('panel_control.php',$data);	
+	}	
 	
+	//Obtiene el token del webservice llamando a la funcion getTokenModel del modelo, ademas guarda lo que recibe en la base de datos y en un array que devuelve
 	public function getToken()
 	{
+		//Obtiene el token
 		$outputToken= $this->webservices_model->getTokenModel(); 
 		
 		//$xml = simplexml_load_string($output);
 
 		$output2=new SimpleXMLElement($outputToken);
-
+		//Guardamos los resultados del response en un array para guardarlo en la base de datos
 		$dataToken = array(
 			'statusCode'  =>$output2->statusCode ,
 			'statusMessage'=>$output2->statusMessage ,
 			'txId'=>$output2->txId ,
 			'token'=>$output2->token ,           
 			'time' => date('Y-m-d H:i:s'),
-			); 	 	
+			); 	 
+		//lo guardamos en la base de datos	
 		$this->webservices_model->insert('tokenresponselog',$dataToken);
 		return $dataToken;
-
 	}
+	//Obtiene la bill del webservice llamando a la funcion getBillModel del modelo, ademas guarda lo que recibe en la base de datos y en un array que devuelve
 	public function getBill($tokensaved,$numeroz)
 	{
 		$outputBill= $this->webservices_model->getBillModel($tokensaved,$numeroz); 
 
 		$output2=new SimpleXMLElement($outputBill);
-
+		//Guardamos los resultados del response en un array para guardarlo en la base de datos
 		$dataBill = array(
 			'statusCode'  =>$output2->statusCode ,
 			'statusMessage'=>$output2->statusMessage ,
 			'txId'=>$output2->txId ,        
 			'time' => date('Y-m-d H:i:s'),
 			); 	
+		//Lo guardamos en la base de datos
 		$this->webservices_model->insert('billresponselog',$dataBill);
 		return	$dataBill;		
 	}
+	//Obtiene el sms del webservice llamando a la funcion getSmsModel del modelo, ademas guarda lo que recibe en la base de datos esta 			funcion es llamada en caso de que se tengan fondos.
 	public function getSms($numeroz)
 	{
 		$outputSms= $this->webservices_model->getSmsModel($numeroz); 
 
 		$output2=new SimpleXMLElement($outputSms);
-
+		//Guardamos los resultados del response en un array para guardarlo en la base de datos
 		$dataSms = array(
 			'statusCode'  =>$output2->statusCode ,
 			'statusMessage'=>$output2->statusMessage ,
 			'txId'=>$output2->txId ,   
 			'time' => date('Y-m-d H:i:s'),     
 			); 
+		//Lo guardamos en la base de datos
 		$this->webservices_model->insert('smsresponselog',$dataSms);	
 	}
+	//Obtiene el sms del webservice llamando a la funcion getSmsModel del modelo, ademas guarda lo que recibe en la base de datos,este es llamado en caso de que no se tengan fond.os
 	public function getSmsNoSaldo($numeroz)
 	{
 		$outputSms= $this->webservices_model->getSmsModelNoSaldo($numeroz); 
 
 		$output2=new SimpleXMLElement($outputSms);
-
+		//Guardamos los resultados del response en un array para guardarlo en la base de datos
 		$dataSms = array(
 			'statusCode'  =>$output2->statusCode ,
 			'statusMessage'=>$output2->statusMessage ,
 			'txId'=>$output2->txId ,   
 			'time' => date('Y-m-d H:i:s'),     
 			); 
+		//Lo guardamos en la base de datos
 		$this->webservices_model->insert('smsresponselog',$dataSms);	
 	}
-
-	public function calltokentest()
-	{
-		$this->load->view('calltokentest');
-	}
-	public function test()
-	{	
-		//generamos num aleatorio para la transaccion para obtener el token
-		$random_transaction_token=rand();
-
-		//Host del webservice
-		$host="http://52.30.94.95/";
-		//datos de autenticacion
-		//$user="scasado";
-		//$pass="BRskzyTE";
-		$userpass="scasado:BRskzyTE";
-
-		//URL para los request
-		$send_sms_url="http://52.30.94.95/send_sms";
-		$token_url="http://52.30.94.95/token";
-		$bill_url="http://52.30.94.95/bill";
-
-		//String con el request del token
-		$token_request='<?xml version="1.0" enconding="UTF-8"?>'.
-		'<request>'.
-		'<transaction>'.$random_transaction_token.'</transaction>'.
-		'</request>';
-
-		//String con el request del cobro
-		$bill_request='<?xml version="1.0" encoding="UTF-8"?>'.
-		'<request>'.
-		'<transaction>'.'</transaction>'.
-		'<msisdn>'.'</msisdn>'. 
-		'<amount>'.'</amount>'.
-		'<token>'.'</token>'.
-		'</request>';
-
-		//String con el request del sms
-		$sms_request='<?xml version="1.0" encoding="UTF-8"?>'.
-		'<request>'.
-		'<shortcode>'.'</shortcode>'.
-		'<text>'.'</text>'.
-		'<msisdn>'.'<msisdn>'.
-		'<transaction>'.'</transaction>'.
-		'</request>';
-
-		//PRUEBA CURL PARA OBTENER EL TOKEN
-
-        // create curl resource 
-		$ch = curl_init(); 
-
-		// Pasamos los datos para autenticarse
-		curl_setopt($ch, CURLOPT_USERPWD, $userpass);
-
-        // set url 
-		curl_setopt($ch, CURLOPT_URL, $token_url); 
-
-		//xml que enviamos
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $token_request);
-
-		//HTTP POST normal
-		curl_setopt($ch, CURLOPT_POST, TRUE); 
-
-        //return the transfer as a string 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
-
-        // $output contains the output string 
-		$output = curl_exec($ch); 
-
-        // close curl resource to free up system resources 
-		curl_close($ch);      
-		
-		//$this->load->view->('tokentest',$output);
-	}
-
-
-
-
 }

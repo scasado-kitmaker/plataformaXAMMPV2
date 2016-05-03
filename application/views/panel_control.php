@@ -12,14 +12,10 @@
 	<?php if (!empty($usuario)) : ?>
 		<?php foreach($usuario as $userf) : ?>
 			<?php $telefonoz = $userf->telefono ?>
-			<?php $passwordz = $userf->password ?>
-			
+			<?php $passwordz = $userf->password ?>			
 			<?php $estadoz= $userf->estado_alta?>
 		<?php endforeach; ?>
-		<!-- If there is no info -->
-
 	<?php endif; ?>
-
 	<div class="show_entries">
 		<?=form_open(base_url().'index.php/users/validatePass/')?>
 		<p>Teléfono:</p> <?php echo $telefonoz ?>
@@ -29,24 +25,8 @@
 		</div>  
 		<p><?=form_password('password','','placeholder="Introduce tu contraseña actual para cambiarla"')?></p>
 		<?=form_submit('submit', 'Actualizar contraseña')?>
-		<!--<p>Saldo: 	
-			<?php
-			
-			//print_r ($dinero);
-
-			if (in_array('SUCCESS', $dinero)) {
-				echo 'Tienes saldo';
-			}
-			if (in_array('NO_FUNDS', $dinero)) {
-				echo 'No tiene saldo';
-			}
-			if (in_array('CHARGING_ERROR', $dinero)) {
-				echo 'An error ocurred, please try again';
-			}
-
-			?>-->
-		</p>
-		<p>Estado suscripción:	
+	</p>
+	<p>Estado suscripción:	
 		<?php 
 		if($estadoz>0)
 		{
@@ -65,12 +45,10 @@
 			if(in_array('NO_FUNDS', $dinero))
 			{
 				echo 'No activa. Debe de agregar saldo para activar la suscripción.';
-			}
-			
+			}			
 		}
 		?>
-		</p>
-	</div>
-
+	</p>
+</div>
 </body>
 </html>

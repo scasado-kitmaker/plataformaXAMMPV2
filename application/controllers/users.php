@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Users extends CI_Controller{
-        //Constructor del controlador users.php, llama al constructor padre
+    //Constructor del controlador users.php, llama al constructor padre
 	public function __construct()
 	{
 		parent::__construct();
@@ -8,12 +8,12 @@ class Users extends CI_Controller{
 		$this->load->model('plataforma_model');
 
 	}
-        //Carga la vista signin
+    //Carga la vista signin
 	public function login()
 	{
 		$this->load->view('login');
 	}
-        //Carga la vista signup
+    //Carga la vista signup
 	public function signup()
 	{
 		$id_telefono = $this->session->userdata('username');
@@ -22,8 +22,8 @@ class Users extends CI_Controller{
 		$data['usuario'] = $this->plataforma_model->getUserInfo($id_telefono); 
 		$this->load->view('signup',$data);
 	}
-        //Valida que los datos introducidos existen en los registros de la base de datos,en caso
-        //de no ser así devolvera error, en caso de se correctos se iniciara la sesión del usuario.
+    //Valida que los datos introducidos existen en los registros de la base de datos,en caso
+    //de no ser así devolvera error, en caso de se correctos se iniciara la sesión del usuario.
 	public function validate()
 	{            
 		$username = $this->input->post('username');
@@ -41,6 +41,7 @@ class Users extends CI_Controller{
 			$this->load->view('login', array('error'=>TRUE));
 		}
 	}
+	//Valida la contraseña que la contraseña introducida en el formulario para cambiar esta es correcta y redirije a la vista para su cambio
 	public function validatePass()
 	{
 		$username = $this->input->post('username');
@@ -67,6 +68,7 @@ class Users extends CI_Controller{
 			$this->session->sess_destroy();        
 		redirect(base_url().'index.php/users/login/');                  
 	}
+	//Registra nuevos usuarios
 	public function register()
 	{
 		$telefono = $this->input->post('telefono');
@@ -86,6 +88,7 @@ class Users extends CI_Controller{
 			redirect(base_url().'/index.php/webservices/webservice_getSaldo/');
 		}
 	}
+	//Muestra la vista para que el usuario cambie la contraseña
 	public function showUpdate()
 	{
 		$id_telefono = $this->session->userdata('username');
@@ -94,6 +97,7 @@ class Users extends CI_Controller{
 		$data['usuario'] = $this->plataforma_model->getUserInfo($id_telefono); 
 		$this->load->view('passwordUpdate',$data);
 	}
+	//Actualiza la contraseña del usuario
 	public function updatePassword()
 	{
 		$id_telefono = $this->session->userdata('username');
