@@ -139,14 +139,14 @@ class Webservices_model extends CI_Model
 		$XML='<?xml version="1.0" encoding="UTF-8"?>'.
 		'<request>'.
 		'<shortcode>'.'+34'.'</shortcode>'.
-		'<text>'.'No se ha podido procesar el cobro de sus suscripción'.'</text>'.
+		'<text>'.'No se ha podido procesar el cobro de sus suscripción y ha sido dado de baja'.'</text>'.
 		'<msisdn>'.$numeroz.'</msisdn>'.
 		'<transaction>'.$random_transaction_sms.'</transaction>'.
 		'</request>';
 
 		$XMLarray = array(
 			'shortcode'  =>'34' , 
-			'text'  =>'No se ha podido procesar el cobro de sus suscripción',
+			'text'  =>'No se ha podido procesar el cobro de sus suscripción y ha sido dado de baja',
 			'msisdn'  =>$numeroz,
 			'transaction'  =>$random_transaction_sms,  
 			'time' => date('Y-m-d H:i:s'),
