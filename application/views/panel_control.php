@@ -28,8 +28,6 @@
 		<?php 
 		if($estadoz>0)
 		{
-
-			base_url().'index.php/users/validate/')?
 			echo 'Activa <a href="http://localhost/plataforma/index.php/plataforma/baja/">	Dar de baja</a>';
 		}
 		else
