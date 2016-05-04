@@ -3,14 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<title>Alta en el servicio</title> 
-	<!--Estilos-->
-	<link rel="shortcut icon" type="image/ico" href="http://localhost/blog/public/assets/images/favicon.ico"/>
-	<link href='http://localhost/plataforma/public/assets/css/style.css' rel='stylesheet' type='text/css' />
 	<!--Scripts-->
 	<script type="text/javascript">
 		document.getElementById("terminos").setCustomValidity("Por favor acepta las condiones antes de darte de alta.");
 	</script>
-
 </head>
 <body>
 	<!--vista de menu-->

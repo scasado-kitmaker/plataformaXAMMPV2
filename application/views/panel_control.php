@@ -3,8 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title>Alta en el servicio</title> 
-	<!--Estilos-->
-	<link rel="shortcut icon" type="image/ico" href="http://localhost/blog/public/assets/images/favicon.ico"/>
 </head>
 <body>
 	<!--vista de menu-->

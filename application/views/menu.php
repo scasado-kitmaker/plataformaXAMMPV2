@@ -3,23 +3,14 @@
 <head>
 	<meta charset="utf-8">       
 	<!--Estilos-->
-	<link href='http://localhost/plataforma/public/assets/css/style.css' rel='stylesheet' type='text/css' />
-	<!--Scripts-->
-	<script src="http://localhost/plataforma/public/assets/js/toastr.js"></script>	
-	<script type="text/javascript" src="http://localhost/plataforma/public/assets/js/moment.js"></script>
-	<script type="text/javascript" src="http://localhost/plataforma/public/assets/js/jquery.cookiebar.js"></script> 
-	<script type="text/javascript"> 
-		$(document).ready(function()
-		{
-			$.cookieBar();
-		});
-	</script>
+	<link href="<?=base_url()?>/public/assets/css/style.css" rel='stylesheet' type='text/css' />
+
+	<link rel="shortcut icon" type="image/ico" href="<?=base_url()?>/public/assets/images/favicon.ico"/>
 </head>
 <body>
 	<div id="header">		
-		<img  src="http://localhost/plataforma/public/assets/images/header2.png">
+		<img  src="<?=base_url()?>/public/assets/images/header2.png">
 	</div>
-
 	<!--Menu principal y codigo para resaltar el boton de la página donde estamos-->
 	<div class="show_entries">
 		<div class="menuBotones"> 
